@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Sidebar from "../Sidebar/page";
+import Sidebar from "../sidebar/page";
 import "./header.css";
 
 const Header = () => {
