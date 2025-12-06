@@ -3,7 +3,7 @@
 // ============================================
 
 // ✅ Base URL من .env
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://one1-backend-4.onrender.com/';
 
 // ✅ دالة مساعدة للطلبات مع Token تلقائي
 export const apiRequest = async (endpoint, options = {}) => {
