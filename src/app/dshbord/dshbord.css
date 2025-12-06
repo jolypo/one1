@@ -1,0 +1,416 @@
+/* ====== الحاوية الرئيسية ====== */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  transition: margin-right 0.3s ease;
+}
+
+/* ====== شريط الأعلى - منسق بشكل جميل ====== */
+.top-dshbord {
+  background: linear-gradient(135deg, #bfd8fe 0%, #e8f2ff 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #255aeb;
+  box-shadow: 0 4px 15px rgba(37, 90, 235, 0.1);
+}
+
+.top-dshbord p {
+  margin: 0 0 1.5rem 0;
+  font-weight: bold;
+  color: #1d45d8;
+  font-size: 24px;
+  text-align: right;
+}
+
+/* ====== النموذج - Grid محسّن ====== */
+.newuser {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* عمودين متساويين */
+  gap: 1.5rem;
+  direction: rtl;
+}
+
+/* زر الإضافة يأخذ عرض كامل */
+.newuser > button {
+  grid-column: 1 / -1; /* ✅ يمتد على كل الأعمدة */
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-weight: 600;
+  text-align: right;
+  color: #1d45d8;
+  font-size: 16px;
+  margin-bottom: 0.3rem;
+}
+
+.newuser input,
+.count-dshbord select {
+  direction: rtl;
+  width: 100%;
+  height: 45px;
+  border-radius: 8px;
+  border: 2px solid #255aeb;
+  background-color: #ffffff;
+  padding: 0 1rem;
+  color: #1d45d8;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.newuser input:focus {
+  outline: none;
+  border-color: #1d45d8;
+  box-shadow: 0 0 0 4px rgba(37, 90, 235, 0.1);
+  background-color: #f8fbff;
+}
+
+/* ✅ حقل كلمة المرور مع زر العرض */
+.field > div {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.field > div > input {
+  flex: 1;
+}
+
+.field > div > button {
+  padding: 0 15px;
+  background-color: #255aeb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.field > div > button:hover {
+  background-color: #1d45d8;
+  transform: translateY(-2px);
+}
+
+/* زر الإضافة */
+.newuser > button[type="submit"] {
+  height: 50px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #255aeb 0%, #1d45d8 100%);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-weight: bold;
+  font-size: 17px;
+  box-shadow: 0 4px 12px rgba(37, 90, 235, 0.3);
+}
+
+.newuser > button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 90, 235, 0.4);
+}
+
+.newuser > button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* ====== حقل الصلاحية ====== */
+.count-dshbord select {
+  background-color: #ffffff;
+  color: #1d45d8;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+
+.count-dshbord select:hover {
+  background-color: #f8fbff;
+  border-color: #1d45d8;
+}
+
+/* ====== الجدول ====== */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.my-table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 800px;
+}
+
+.my-table thead tr {
+  background: linear-gradient(135deg, #dbe8fe 0%, #e8f2ff 100%);
+  color: #1d45d8;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.my-table th,
+.my-table td {
+  border: 1px solid #e5e7eb;
+  padding: 15px 12px;
+}
+
+.my-table tbody tr.odd-row {
+  background-color: #fafbfc;
+}
+
+.my-table tbody tr.even-row {
+  background-color: #ffffff;
+}
+
+.my-table tbody tr:hover {
+  background-color: #f0f7ff;
+  transition: background-color 0.2s ease;
+}
+
+/* ====== أزرار الجدول ====== */
+.update_btn {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+}
+
+.update_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+}
+
+.confo_btn {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.confo_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.input_pass {
+  background-color: #f8fbff;
+  border: 2px solid #255aeb;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  direction: rtl;
+  width: 100%;
+  max-width: 150px;
+}
+
+.input_pass:focus {
+  outline: none;
+  border-color: #1d45d8;
+  box-shadow: 0 0 0 3px rgba(37, 90, 235, 0.1);
+}
+
+/* ====== شاشات متوسطة (Tablets) - أقل من 1024px ====== */
+@media (max-width: 1024px) {
+  .container {
+    margin-right: 0; /* ✅ إلغاء مسافة Sidebar */
+    padding: 15px;
+    gap: 1.5rem;
+  }
+
+  .top-dshbord {
+    padding: 1.5rem;
+  }
+
+  .top-dshbord p {
+    font-size: 22px;
+  }
+
+  .newuser {
+    grid-template-columns: 1fr; /* ✅ عمود واحد */
+    gap: 1.2rem;
+  }
+
+  .my-table {
+    font-size: 14px;
+  }
+
+  .my-table th,
+  .my-table td {
+    padding: 12px 8px;
+  }
+}
+
+/* ====== شاشات صغيرة (الجوال) - أقل من 768px ====== */
+@media (max-width: 768px) {
+  .container {
+    margin-right: 0;
+    padding: 12px;
+    gap: 1.2rem;
+  }
+
+  .top-dshbord {
+    padding: 1.2rem;
+    border-radius: 10px;
+  }
+
+  .top-dshbord p {
+    font-size: 20px;
+    margin-bottom: 1.2rem;
+  }
+
+  .newuser {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .field label {
+    font-size: 15px;
+  }
+
+  .newuser input,
+  .count-dshbord select {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .newuser > button[type="submit"] {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .field > div > button {
+    font-size: 13px;
+    padding: 0 12px;
+  }
+
+  /* ✅ الجدول يصبح scrollable */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .my-table {
+    font-size: 13px;
+    min-width: 700px;
+  }
+
+  .my-table th,
+  .my-table td {
+    padding: 10px 6px;
+  }
+
+  .update_btn,
+  .confo_btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .input_pass {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+/* ====== شاشات الجوال الصغيرة - أقل من 480px ====== */
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+    gap: 1rem;
+  }
+
+  .top-dshbord {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .top-dshbord p {
+    font-size: 18px;
+    margin-bottom: 1rem;
+  }
+
+  .newuser {
+    gap: 0.9rem;
+  }
+
+  .field label {
+    font-size: 14px;
+  }
+
+  .newuser input,
+  .count-dshbord select {
+    height: 40px;
+    font-size: 13px;
+    padding: 0 0.8rem;
+  }
+
+  .newuser > button[type="submit"] {
+    height: 45px;
+    font-size: 15px;
+  }
+
+  .field > div > button {
+    font-size: 12px;
+    padding: 0 10px;
+  }
+
+  .my-table {
+    font-size: 12px;
+    min-width: 650px;
+  }
+
+  .my-table th,
+  .my-table td {
+    padding: 8px 4px;
+    font-size: 11px;
+  }
+
+  .update_btn,
+  .confo_btn {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .input_pass {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+}
+
+/* ====== عند إخفاء Sidebar ====== */
+@media (min-width: 1025px) {
+  .sidebar-hidden .container {
+    margin-right: 0; /* ✅ إلغاء المسافة عند إخفاء Sidebar */
+  }
+}

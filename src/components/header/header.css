@@ -1,0 +1,44 @@
+/* Header */
+.header {
+  width: 100vw;
+  height: 15vh;            /* ارتفاع الهيدر على الكبير */
+  background-color: #fffbfb;
+  border-bottom: 2px solid #a0b7ff;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  position: fixed;         /* ثابت في الأعلى */
+  top: 0;
+  right: 0;
+  z-index: 1200;           /* أعلى من Sidebar */
+}
+
+/* صورة الشعار */
+img {
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 8vw;
+  height: 80%;
+  margin-right: 60vw;
+}
+
+/* الهامبرغر */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    color: black;
+  }
+  .header {
+    height: 12vh;
+  }
+}

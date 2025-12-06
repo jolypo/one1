@@ -1,0 +1,115 @@
+/* ===== الحاوية الرئيسية ===== */
+.container-receipt {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ===== شريط الأعلى ===== */
+.top-receipt{
+  display: flex;
+  flex-direction: row-reverse;
+  background-color:#bfd8fe ;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  border:#255aeb solid 0.5px ;
+  gap: 3rem;
+  font-size: 24px;
+}
+
+/* ===== حقول الإدخال ===== */
+.field-row{
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.2rem;
+}
+.field-row input{
+  direction: rtl;
+  width: 14rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  border: #255aeb solid 0.5px;
+  background-color: #eff5ff;
+  padding: 2px 5px;
+  color: #1d45d8;
+}
+.field-row select{
+  width: 4rem;
+  height: 2rem;
+  margin: 0 .5rem;
+  border-radius: 0.2rem;
+  background-color:#255aeb ;
+  border: #255aeb solid 0.5px;
+  padding: 0.2rem;
+}
+
+
+/* ===== صفوف المواد ===== */
+.material-row{
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5rem;
+  margin-top: 1rem;
+}
+.material-row p{
+  font-size: 24px;
+}
+
+/* ===== عناصر المادة ===== */
+.item{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.item input{
+  direction: rtl;
+  width: 14rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  border: #255aeb solid 0.5px;
+  background-color: #ffffff;
+  padding: 2px 5px;
+  color: #1d45d8;
+}
+.item2{
+  display: flex;
+  gap: 2rem;
+}
+.item2:last-child{
+  flex-direction: row-reverse;
+  gap: 2rem;
+}
+.add-material { width: 75vw; 
+margin: 2rem auto;
+}
+
+
+/* ===== أزرار ===== */
+.buttons-addORcansle{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* ===== تنسيقات للشاشات الصغيرة ===== */
+@media (max-width: 768px) {
+  .container-receipt { gap: 0.8rem; padding: 0.5rem; }
+  .top-receipt { flex-direction: column; gap: 0.5rem; font-size: 16px; padding: 0.6rem; text-align: center; width: 93vw; }
+  .top-receipt p { padding: 0; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; }
+  .field-row { flex-direction: column; gap: 0.5rem; width: 100%; }
+  .field-row input, .field-row select { width: 95%; font-size: 14px; }
+  .material-row { flex-direction: column; gap: 1rem; align-items: stretch; width: 93vw; }
+  .material-row div p { display: flex; justify-content: center; }
+  .item { width: 100%; gap: 1rem; }
+  .item input { width: 95%; font-size: 14px; }
+  .item2 { flex-direction: column; gap: 1rem; width: 100%; }
+  .item2:last-child { flex-direction: column; gap: 1rem; }
+  .add-material { width: 93vw; }
+  .buttons-addORcansle { flex-direction: column; gap: 0.5rem; width: 100%; }
+  .buttons-addORcansle button { width: 95%; font-size: 14px; padding: 0.5rem; }
+}

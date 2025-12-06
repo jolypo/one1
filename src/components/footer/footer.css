@@ -1,0 +1,14 @@
+.footer{
+  text-align: center;
+  height: 5vh;
+  width: 100vw;
+  background-color: #4d49ff;
+  color: white;
+}
+
+@media (min-width: 769px) {
+.footer{
+  position: relative;
+  z-index: 1001;
+}
+}

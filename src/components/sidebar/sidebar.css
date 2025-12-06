@@ -1,0 +1,152 @@
+/* ===== Sidebar ===== */
+.sidebar {
+  direction: rtl;
+  position: fixed;
+  top: 0;              
+  right: 0;
+  width: 20vw;         
+  height: 100vh;       
+  background: #eef1ff;
+  border-left: 2px solid #a0b7ff;
+  padding-top: 15vh;   
+  box-sizing: border-box;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+/* قائمة العناصر */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  cursor: pointer;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 0.4rem;
+  margin-bottom: 10px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hover و Active */
+.sidebar li:hover {
+  background-color: #0070f3;
+  color: white;
+}
+
+.sidebar li.active {
+  background-color: #0070f3;
+  color: white;
+}
+
+/* العناصر القابلة للفتح */
+.menu-item {
+  display: flex;
+  justify-content: flex-start; /* لتقليل المسافة بين الرمز والكلمة */
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 0.4rem 0.4rem 0 0;
+  gap: 5px; /* مسافة صغيرة بين الرمز والكلمة */
+}
+
+.menu-icon {
+  font-size: 1.1rem; /* حجم الرمز */
+  line-height: 1;
+}
+
+.menu-text {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Arrow */
+.arrow {
+  margin-left: auto; /* ابعد السهم لليمين */
+  transition: transform 0.3s;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.dropdown {
+  list-style: none;
+  padding-left: 15px;
+  margin: 5px 0;
+}
+
+.dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+
+.menu-block.active-block {
+  background-color: #0070f3;
+  color: white;
+}
+
+.menu-block.active-block .menu-item,
+.menu-block.active-block .dropdown li {
+  color: white;
+}
+
+/* زر الإغلاق */
+.close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* ظهور Sidebar عند الهامبرغر */
+.sidebar.show {
+  transform: translateX(0);
+}
+
+/* Overlay للجوال */
+.overlay {
+  display: none;
+}
+
+/* ===== Media Queries ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    top: 12vh;
+    height: calc(100vh - 12vh);
+    width: 60vw;
+    padding-top: 0;
+  }
+
+  .sidebar ul {
+    padding-top: 20px;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 900;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar {
+    transform: translateX(0);
+    padding-top: 15vh;
+  }
+  .sidebar li {
+    margin-bottom: 20px;
+  }
+}

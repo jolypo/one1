@@ -1,0 +1,16 @@
+@media (max-width: 768px) {
+
+  .top{
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+  }
+.topTols{
+    display: flex;
+    flex-direction: column;
+}
+.itemTols{
+  display: flex;
+    flex-direction: column;
+}
+  }

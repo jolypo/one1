@@ -1,0 +1,200 @@
+.container {
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+gap: 2rem;
+}
+.top-storge{
+  display: flex;
+  flex-direction: row-reverse;
+  background-color:#bfd8fe ;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  border:#255aeb solid 0.5px ;
+  gap: 3rem;
+  font-size: 24px;
+}
+
+/* النموذج */
+.top-storge form{
+  display: flex;
+    flex-direction: row-reverse;
+   gap: 15rem;
+}
+/* خانة البحث */
+.serch-storge{
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.2rem;
+}
+.serch-storge input{
+  direction: rtl;
+  width: 14rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  border: #255aeb solid 0.5px;
+  padding: 0.2rem;
+  background-color: #eff5ff;
+  padding: 2px 5px;
+  color: #1d45d8;
+}
+.serch-storge button{
+  width: 2.5rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  background-color:#255aeb ;
+  border: #1d45d8 solid 0.5px;
+}
+.serch-storge button:hover{
+  width: 2.6rem;
+  height: 2.1rem;
+  cursor: pointer;
+}
+
+/* خانة العداد  */
+.count{
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.2rem;
+  align-items: center;
+  font-size: 18px;
+}
+.count select{
+  width: 4rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  background-color:#255aeb ;
+  border: #255aeb solid 0.5px;
+  padding: 0.2rem;
+}
+
+/* خانة الجدول */
+.my-table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+}
+
+/* صف الرأس */
+.my-table thead tr {
+  background-color:#dbe8fe; /* أزرق */
+  color: rgb(0, 0, 0);
+}
+
+/* حدود الخلايا */
+.my-table th,
+.my-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+/* صفوف بالتناوب */
+.my-table tbody tr.odd-row {
+  background-color: #f0f0f0; /* رمادي فاتح */
+}
+
+.my-table tbody tr.even-row {
+  background-color: #ffffff; /* أبيض */
+}
+.table-wrapper {
+  display: flex;
+  justify-content: center; /* توسيط الجدول أفقياً */
+  width: 100%;
+  overflow-x: auto; /* لتمكين التمرير الأفقي إذا ضاق الجدول */
+}
+/* تنسيقات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .container {
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .top-storge {
+    flex-direction: row-reverse; 
+    gap: 0.3rem;
+    font-size: 16px; 
+    padding: 0.8rem;
+    width: 90vw;
+    align-items: center;
+    flex-wrap: nowrap; /* منع انكسار العناصر */
+  }
+
+  /* الصفحة الرئيسية */
+  .top-storge p {
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;       /* يمنع الانتقال لسطر جديد */
+    overflow: hidden;          /* يخفي النص الزائد */
+    text-overflow: ellipsis;   /* يظهر ... إذا النص طويل */
+    flex-shrink: 1;            /* يقلص العنصر عند الحاجة */
+  }
+
+  /* النموذج */
+  .top-storge form {
+    flex-direction: row-reverse;
+    gap: 1rem;
+    flex: 1; /* يأخذ المساحة المتبقية */
+    justify-content: flex-end;
+  }
+
+  /* خانة البحث */
+  .serch-storge {
+    flex-direction: row-reverse;
+    gap: 0.5rem;
+  }
+
+  .serch-storge input {
+    width: 100%; 
+    height: 2rem;
+    font-size: 14px;
+    padding: 2px 5px;
+  }
+
+  .serch-storge button {
+    width: 2.5rem;
+    height: 2rem;
+  }
+
+  /* خانة العداد */
+  .count {
+    gap: 0.5rem;
+    font-size: 14px;
+  }
+
+  .count select {
+    width: 4rem;
+    height: 2rem;
+    font-size: 14px;
+  }
+.table-wrapper {
+  width:90vw;
+  display: flex;            /* اجعل الحاوية flex */
+  justify-content: center;  /* لتوسيط الجدول أفقياً */
+  overflow-x: auto;         /* تمكين التمرير إذا تجاوز الجدول */
+
+}
+  /* جدول */
+.my-table {
+  width: 50vw;       /* ملء عرض الشاشة */
+  max-width: 100%;   /* منع تجاوز العرض */
+  font-size: 12px;
+  display: block;
+}
+
+  .my-table th,
+  .my-table td {
+    padding: 6px;
+  }
+
+  .my-table thead tr,
+  .my-table tbody tr.odd-row,
+  .my-table tbody tr.even-row {
+    font-size: 12px;
+  }
+}
+
+
+
+
+
+
