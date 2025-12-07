@@ -14,9 +14,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-  },
 };
 
-export default nextConfig;  // ⬅️ هنا الفرق (export بدل module.exports)
+export default nextConfig;
