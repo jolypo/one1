@@ -14,6 +14,12 @@ const LoginPage = () => {
 // test deployment - 2024
   // ✅ إذا كان مسجل دخول مسبقاً، انتقل للصفحة الرئيسية
   useEffect(() => {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/routes/storge`)
+    .then(res => res.json())
+    .then(data => console.log('✅ بيانات الباك اند:', data))
+    .catch(err => console.error('❌ خطأ في الاتصال:', err));
+}, []);
+  useEffect(() => {
     if (isAuthenticated()) {
       router.replace("/");
     }
