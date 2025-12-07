@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ✅ السماح بالصور من Backend
   images: {
     remotePatterns: [
       {
@@ -14,14 +13,10 @@ const nextConfig = {
       },
     ],
   },
-
-  // ✅ إعدادات Build
   reactStrictMode: true,
-
-  // ✅ Environment Variables
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;  // ⬅️ هنا الفرق (export بدل module.exports)
