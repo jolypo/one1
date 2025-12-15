@@ -182,7 +182,7 @@ const Page = () => {
                             {person.receiptReceipts.map((receipt, idx) => (
                               <button
                                 key={idx}
-                                onClick={() => window.open(getFileUrl(`/receipts/${receipt.fileName}`), "_blank")}
+                                onClick={() => window.open(receipt.pdfUrl, "_blank")}
                                 style={{
                                   backgroundColor: "#255aeb",
                                   color: "white",
