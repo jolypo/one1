@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { api, isAuthenticated } from '@/utils/api';
+import { api, isAuthenticated , API_URL  } from '@/utils/api';
 import { useRouter } from "next/navigation";
 import "./receipt.css";
 
@@ -201,9 +201,12 @@ const Page = () => {
       if (res.ok) {
         alert("✅ تم إضافة السند بنجاح!");
         
-       if (result.pdfUrl) {
+  if (result.pdfUrl) {
   if (confirm("📄 هل تريد فتح سند الاستلام؟")) {
-    window.open(result.pdfUrl, "_blank", "noopener,noreferrer");
+    const fullUrl = result.pdfUrl.startsWith('http') 
+      ? result.pdfUrl 
+      : `${API_URL}${result.pdfUrl}`;
+    window.open(fullUrl, "_blank", "noopener,noreferrer");
   }
 }
 
