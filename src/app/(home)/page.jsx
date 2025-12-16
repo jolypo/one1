@@ -1,185 +1,215 @@
-require("dotenv").config();
-const path = require("path");
-const mongoose = require("mongoose");
-const PdfPrinter = require("pdfmake");
-const https = require("https");
+"use client";
 
-const Receipt = require("../models/receipt");
-const Storge = require("../models/stroge");
-const cloudinary = require("./cloudinary");
+import React, { useEffect, useState } from "react";
+import { api, getFileUrl } from "@/utils/api";
+import "./home.css";
 
-/* ================== أدوات مساعدة ================== */
-const fetchImageBuffer = (url) =>
-  new Promise((resolve, reject) => {
-    https
-      .get(url, (res) => {
-        const chunks = [];
-        res.on("data", (c) => chunks.push(c));
-        res.on("end", () => resolve(Buffer.concat(chunks)));
-      })
-      .on("error", reject);
-  });
+const Page = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
 
-const uploadPDFtoCloudinary = (buffer) =>
-  new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        resource_type: "raw",
-        folder: "receipts",
-        upload_preset: "public_receipts",
-      },
-      (err, result) => {
-        if (err) return reject(err);
-        resolve({ url: result.secure_url, public_id: result.public_id });
+  /* ================== جلب البيانات ================== */
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const res = await api.getAllReceipts({ search, limit, page });
+      if (!res.ok) {
+        setData([]);
+        return;
       }
-    );
-    stream.end(buffer);
-  });
 
-/* ================== إنشاء PDF ================== */
-const generateReceiptPDF = async (receipt) => {
-  const fonts = {
-    Cairo: {
-      normal: path.join(__dirname, "../fonts/Cairo-Regular.ttf"),
-      bold: path.join(__dirname, "../fonts/Cairo-Bold.ttf"),
-    },
+      const result = await res.json();
+      setData(result.data || []);
+      setTotal(result.total || 0);
+      setTotalPages(result.totalPages || 1);
+    } catch (err) {
+      console.error("❌ خطأ:", err);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const printer = new PdfPrinter(fonts);
+  useEffect(() => {
+    const t = setTimeout(fetchData, 500);
+    return () => clearTimeout(t);
+  }, [search, limit, page]);
 
-  const body = [
-    ["#", "اسم المادة", "نوع المادة", "رقم المادة", "الكمية"].map((t) => ({
-      text: t,
-      bold: true,
-      alignment: "center",
-    })),
+  const headers = [
+    "عدد",
+    "الرتبة",
+    "الاسم",
+    "الرقم",
+    "المواد المستلمة",
+    "المواد في العهدة",
+    "سند استلام",
+    "سند تسليم",
   ];
 
-  receipt.items.forEach((i, idx) => {
-    body.push([
-      { text: idx + 1, alignment: "center" },
-      { text: i.itemName, alignment: "center" },
-      { text: i.itemType, alignment: "center" },
-      { text: i.itemNumber, alignment: "center" },
-      { text: i.quantity, alignment: "center" },
-    ]);
-  });
+  /* ================== العرض ================== */
+  return (
+    <div className="container">
+      {/* ======= الأعلى ======= */}
+      <div className="top">
+        <p>الصفحة الرئيسة</p>
 
-  let receiverSig = { text: "لا يوجد توقيع", alignment: "center" };
-  if (receipt.receiver.signature?.startsWith("http")) {
-    receiverSig = { image: await fetchImageBuffer(receipt.receiver.signature), width: 100 };
-  } else if (receipt.receiver.signature?.startsWith("data:image")) {
-    receiverSig = { image: receipt.receiver.signature, width: 100 };
-  }
+        <div className="topTols">
+          <div className="serch">
+            <input
+              type="search"
+              placeholder="ابحث بالاسم أو الرقم..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+            />
+            <button>🔍</button>
+          </div>
 
-  let managerSig = { text: "لا يوجد توقيع", alignment: "center" };
-  if (receipt.managerSignature?.startsWith("http")) {
-    managerSig = { image: await fetchImageBuffer(receipt.managerSignature), width: 100 };
-  } else if (receipt.managerSignature?.startsWith("data:image")) {
-    managerSig = { image: receipt.managerSignature, width: 100 };
-  }
+          <div className="count">
+            <label>إظهار</label>
+            <select
+              value={limit}
+              onChange={(e) => {
+                setLimit(Number(e.target.value));
+                setPage(1);
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-  const doc = {
-    pageSize: "A4",
-    defaultStyle: { font: "Cairo", alignment: "right" },
-    content: [
-      { text: `التاريخ: ${new Date(receipt.createdAt).toLocaleDateString("ar-SA")}` },
-      { text: "\nسند استلام\n", alignment: "center", bold: true, fontSize: 18 },
-      { table: { headerRows: 1, widths: ["auto", "*", "*", "*", "auto"], body } },
-      { text: "\nأقر باستلام جميع المواد الموضحة أعلاه", alignment: "center" },
-      {
-        columns: [
-          { stack: [{ text: "المسلم", alignment: "center", bold: true }, managerSig] },
-          { stack: [{ text: "المستلم", alignment: "center", bold: true }, receiverSig] },
-        ],
-        margin: [0, 30],
-      },
-    ],
-  };
+      {/* ======= المحتوى ======= */}
+      {loading ? (
+        <div className="loading">⏳ جاري التحميل...</div>
+      ) : data.length === 0 ? (
+        <div className="empty">📭 لا توجد بيانات</div>
+      ) : (
+        <>
+          <div className="info">
+            إجمالي الأشخاص: <strong>{total}</strong> | الصفحة{" "}
+            <strong>{page}</strong> من <strong>{totalPages}</strong>
+          </div>
 
-  return new Promise((resolve, reject) => {
-    const pdf = printer.createPdfKitDocument(doc);
-    const chunks = [];
-    pdf.on("data", (c) => chunks.push(c));
-    pdf.on("end", async () => {
-      try {
-        resolve(await uploadPDFtoCloudinary(Buffer.concat(chunks)));
-      } catch (e) {
-        reject(e);
-      }
-    });
-    pdf.end();
-  });
+          <div className="table-wrapper">
+            <table className="my-table" dir="rtl">
+              <thead>
+                <tr>
+                  {headers.map((h, i) => (
+                    <th key={i}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {data.map((person, index) => (
+                  <tr key={index}>
+                    <td>{(page - 1) * limit + index + 1}</td>
+                    <td>{person.rank}</td>
+                    <td>{person.name}</td>
+                    <td>{person.number}</td>
+
+                    {/* المواد المستلمة */}
+                    <td>
+                      {person.receivedItems.map((it, i) => (
+                        <div key={i}>
+                          • {it.name} ({it.type}) – كمية:{" "}
+                          <strong>{it.quantity}</strong>
+                        </div>
+                      ))}
+                    </td>
+
+                    {/* المواد في العهدة */}
+                    <td>
+                      {person.itemsInCustody.length ? (
+                        person.itemsInCustody.map((it, i) => (
+                          <div key={i}>🔒 {it.name} – {it.quantity}</div>
+                        ))
+                      ) : (
+                        <span className="ok">✅ تم التسليم</span>
+                      )}
+                    </td>
+
+                    {/* سندات الاستلام */}
+                    <td>
+                      {person.receiptReceipts.length ? (
+                        person.receiptReceipts.map((r, i) => (
+                          <button
+                            key={i}
+                            onClick={() =>
+                              window.open(r.pdfUrl, "_blank", "noopener")
+                            }
+                          >
+                            📄 سند {i + 1}
+                          </button>
+                        ))
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+
+                    {/* سندات التسليم */}
+                    <td>
+                      {person.deliveryReceipts.length ? (
+                        person.deliveryReceipts.map((d, i) => (
+                          <button
+                            key={i}
+                            onClick={() =>
+                              window.open(
+                                getFileUrl(`/delivery/${d.fileName}`),
+                                "_blank"
+                              )
+                            }
+                          >
+                            📄 سند {i + 1}
+                          </button>
+                        ))
+                      ) : (
+                        <span className="lock">🔒 في العهدة</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ======= Pagination ======= */}
+          <div className="pagination">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+            >
+              السابق
+            </button>
+
+            <span>
+              صفحة {page} من {totalPages}
+            </span>
+
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+            >
+              التالي
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
-/* ================== إضافة سند ================== */
-const post_add_receipt = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
-  try {
-    const { receiver, items, receiverSignature, managerSignature } = req.body;
-
-    if (!receiver || !receiverSignature || !Array.isArray(items) || !items.length) {
-      throw new Error("البيانات ناقصة");
-    }
-
-    const details = [];
-
-    for (const i of items) {
-      const item = await Storge.findById(i.item).session(session);
-      if (!item) throw new Error("مادة غير موجودة");
-      if (item.qin < i.quantity) throw new Error("الكمية غير كافية");
-
-      item.qin -= i.quantity;
-      await item.save({ session });
-
-      details.push({
-        item: item._id,
-        itemName: item.itemName,
-        itemType: item.itemType,
-        itemNumber: item.itemNumber,
-        quantity: i.quantity,
-      });
-    }
-
-    const receipt = new Receipt({
-      type: "استلام",
-      receiver: { ...receiver, signature: receiverSignature },
-      managerSignature: managerSignature || process.env.MANAGER_SIGNATURE_URL,
-      items: details,
-    });
-
-    await receipt.save({ session });
-
-    await session.commitTransaction();
-    session.endSession();
-
-    const pdf = await generateReceiptPDF(receipt);
-    receipt.pdfUrl = pdf.url;
-    receipt.pdfPublicId = pdf.public_id;
-    await receipt.save();
-
-    res.status(201).json({ message: "تم بنجاح", pdfUrl: receipt.pdfUrl });
-  } catch (e) {
-    await session.abortTransaction();
-    session.endSession();
-    res.status(500).json({ message: e.message });
-  }
-};
-
-/* ================== جلب ================== */
-const get_all_receipts = async (_, res) =>
-  res.json(await Receipt.find({ type: "استلام" }).sort({ createdAt: -1 }));
-
-const get_receipt_by_id = async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id))
-    return res.status(400).json({ message: "ID غير صحيح" });
-
-  const receipt = await Receipt.findById(req.params.id);
-  if (!receipt) return res.status(404).json({ message: "غير موجود" });
-
-  res.json(receipt);
-};
-
-module.exports = { post_add_receipt, get_all_receipts, get_receipt_by_id };
+export default Page;
