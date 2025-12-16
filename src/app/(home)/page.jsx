@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { api } from "@/utils/api";
+import { api, API_URL } from "@/utils/api";
 import "./home.css";
 
 const Page = () => {
@@ -142,49 +142,39 @@ const Page = () => {
                       )}
                     </td>
 
-                    {/* ✅ سندات الاستلام - التعديل هنا */}
+                    {/* ✅ سندات الاستلام */}
                     <td>
                       {person.receiptReceipts.length ? (
-                        person.receiptReceipts.map((r, i) => (
-                          <button
-                            key={i}
-                            onClick={() => {
-                              // ✅ تحقق من وجود pdfUrl وصحته
-                              if (r.pdfUrl && r.pdfUrl.startsWith('http')) {
-                                window.open(r.pdfUrl, "_blank", "noopener");
-                              } else {
-                                alert('رابط الملف غير صحيح');
-                                console.error('❌ رابط خاطئ:', r);
-                              }
-                            }}
-                          >
-                            📄 سند {i + 1}
-                          </button>
-                        ))
+                        person.receiptReceipts.map((r, i) => {
+                          const fileUrl = r.pdfUrl?.startsWith("http") ? r.pdfUrl : `${API_URL}${r.pdfUrl}`;
+                          return (
+                            <button
+                              key={i}
+                              onClick={() => window.open(fileUrl, "_blank", "noopener,noreferrer")}
+                            >
+                              📄 سند {i + 1}
+                            </button>
+                          );
+                        })
                       ) : (
                         "-"
                       )}
                     </td>
 
-                    {/* ✅ سندات التسليم - التعديل هنا */}
+                    {/* ✅ سندات التسليم */}
                     <td>
                       {person.deliveryReceipts.length ? (
-                        person.deliveryReceipts.map((d, i) => (
-                          <button
-                            key={i}
-                            onClick={() => {
-                              // ✅ تحقق من وجود pdfUrl وصحته
-                              if (d.pdfUrl && d.pdfUrl.startsWith('http')) {
-                                window.open(d.pdfUrl, "_blank", "noopener");
-                              } else {
-                                alert('رابط الملف غير صحيح');
-                                console.error('❌ رابط خاطئ:', d);
-                              }
-                            }}
-                          >
-                            📄 سند {i + 1}
-                          </button>
-                        ))
+                        person.deliveryReceipts.map((d, i) => {
+                          const fileUrl = d.pdfUrl?.startsWith("http") ? d.pdfUrl : `${API_URL}${d.pdfUrl}`;
+                          return (
+                            <button
+                              key={i}
+                              onClick={() => window.open(fileUrl, "_blank", "noopener,noreferrer")}
+                            >
+                              📄 سند {i + 1}
+                            </button>
+                          );
+                        })
                       ) : (
                         <span className="lock">🔒 في العهدة</span>
                       )}
@@ -197,10 +187,7 @@ const Page = () => {
 
           {/* ======= Pagination ======= */}
           <div className="pagination">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-            >
+            <button disabled={page === 1} onClick={() => setPage(page - 1)}>
               السابق
             </button>
 
@@ -208,10 +195,7 @@ const Page = () => {
               صفحة {page} من {totalPages}
             </span>
 
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
-            >
+            <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
               التالي
             </button>
           </div>
