@@ -52,6 +52,15 @@ const Page = () => {
     "سند تسليم",
   ];
 
+  /* ================== تحميل PDF ================== */
+  const handleDownload = (url, filename) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.target = "_blank";
+    link.click();
+  };
+
   /* ================== العرض ================== */
   return (
     <div className="container">
@@ -125,8 +134,7 @@ const Page = () => {
                     <td>
                       {person.receivedItems.map((it, i) => (
                         <div key={i}>
-                          • {it.name} ({it.type}) – كمية:{" "}
-                          <strong>{it.quantity}</strong>
+                          • {it.name} ({it.type}) – كمية: <strong>{it.quantity}</strong>
                         </div>
                       ))}
                     </td>
@@ -142,7 +150,7 @@ const Page = () => {
                       )}
                     </td>
 
-                    {/* ✅ سندات الاستلام */}
+                    {/* سندات الاستلام */}
                     <td>
                       {person.receiptReceipts.length ? (
                         person.receiptReceipts.map((r, i) => {
@@ -150,7 +158,7 @@ const Page = () => {
                           return (
                             <button
                               key={i}
-                              onClick={() => window.open(fileUrl, "_blank", "noopener,noreferrer")}
+                              onClick={() => handleDownload(fileUrl, `سند_استلام_${person.name}_${i + 1}.pdf`)}
                             >
                               📄 سند {i + 1}
                             </button>
@@ -161,7 +169,7 @@ const Page = () => {
                       )}
                     </td>
 
-                    {/* ✅ سندات التسليم */}
+                    {/* سندات التسليم */}
                     <td>
                       {person.deliveryReceipts.length ? (
                         person.deliveryReceipts.map((d, i) => {
@@ -169,7 +177,7 @@ const Page = () => {
                           return (
                             <button
                               key={i}
-                              onClick={() => window.open(fileUrl, "_blank", "noopener,noreferrer")}
+                              onClick={() => handleDownload(fileUrl, `سند_تسليم_${person.name}_${i + 1}.pdf`)}
                             >
                               📄 سند {i + 1}
                             </button>
