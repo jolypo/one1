@@ -3,20 +3,17 @@
 // ============================================
 
 // ✅ Base URL من .env
-const API_URL =  'https://one1-backend-4.onrender.com';
+const API_URL = 'https://one1-backend-4.onrender.com';
 
 // ✅ دالة مساعدة للطلبات مع Token تلقائي
 export const apiRequest = async (endpoint, options = {}) => {
-  // الحصول على Token
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   
-  // Headers افتراضية
   const defaultHeaders = {
     'Content-Type': 'application/json',
     ...(token && { 'Authorization': `Bearer ${token}` })
   };
 
-  // دمج الإعدادات
   const config = {
     ...options,
     headers: {
@@ -28,7 +25,6 @@ export const apiRequest = async (endpoint, options = {}) => {
   try {
     const response = await fetch(`${API_URL}${endpoint}`, config);
     
-    // معالجة 401 (غير مصرح)
     if (response.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
@@ -120,18 +116,6 @@ export const api = {
     method: 'PUT',
     body: JSON.stringify(data)
   })
-};
-
-// ============================================
-// ✅ دالة للحصول على رابط الملفات
-// ============================================
-export const getFileUrl = (path) => {
-  // إذا كان الـ path يبدأ بـ / استخدمه مباشرة
-  if (path.startsWith('/')) {
-    return `${API_URL}${path}`;
-  }
-  // وإلا أضف / قبله
-  return `${API_URL}/${path}`;
 };
 
 // ============================================
