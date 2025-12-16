@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { api, getFileUrl } from "@/utils/api";
+import { api } from "@/utils/api";
 import "./home.css";
 
 const Page = () => {
@@ -142,15 +142,21 @@ const Page = () => {
                       )}
                     </td>
 
-                    {/* سندات الاستلام */}
+                    {/* ✅ سندات الاستلام - التعديل هنا */}
                     <td>
                       {person.receiptReceipts.length ? (
                         person.receiptReceipts.map((r, i) => (
                           <button
                             key={i}
-                            onClick={() =>
-                              window.open(r.pdfUrl, "_blank", "noopener")
-                            }
+                            onClick={() => {
+                              // ✅ تحقق من وجود pdfUrl وصحته
+                              if (r.pdfUrl && r.pdfUrl.startsWith('http')) {
+                                window.open(r.pdfUrl, "_blank", "noopener");
+                              } else {
+                                alert('رابط الملف غير صحيح');
+                                console.error('❌ رابط خاطئ:', r);
+                              }
+                            }}
                           >
                             📄 سند {i + 1}
                           </button>
@@ -160,18 +166,21 @@ const Page = () => {
                       )}
                     </td>
 
-                    {/* سندات التسليم */}
+                    {/* ✅ سندات التسليم - التعديل هنا */}
                     <td>
                       {person.deliveryReceipts.length ? (
                         person.deliveryReceipts.map((d, i) => (
                           <button
                             key={i}
-                            onClick={() =>
-                              window.open(
-                                getFileUrl(`/delivery/${d.fileName}`),
-                                "_blank"
-                              )
-                            }
+                            onClick={() => {
+                              // ✅ تحقق من وجود pdfUrl وصحته
+                              if (d.pdfUrl && d.pdfUrl.startsWith('http')) {
+                                window.open(d.pdfUrl, "_blank", "noopener");
+                              } else {
+                                alert('رابط الملف غير صحيح');
+                                console.error('❌ رابط خاطئ:', d);
+                              }
+                            }}
                           >
                             📄 سند {i + 1}
                           </button>
