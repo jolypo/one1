@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { api, isAuthenticated, getFileUrl } from '@/utils/api';
+import { api, isAuthenticated } from '@/utils/api';
 import { useRouter } from "next/navigation";
 import "./receipt.css";
 
@@ -201,12 +201,12 @@ const Page = () => {
       if (res.ok) {
         alert("✅ تم إضافة السند بنجاح!");
         
-        if (result.pdfUrl) {
-          const downloadLink = getFileUrl(result.pdfUrl);
-          if (confirm("📄 هل تريد تحميل سند الاستلام؟")) {
-            window.open(downloadLink, "_blank");
-          }
-        }
+       if (result.pdfUrl) {
+  if (confirm("📄 هل تريد فتح سند الاستلام؟")) {
+    window.open(result.pdfUrl, "_blank", "noopener,noreferrer");
+  }
+}
+
 
         // إعادة تعيين الحقول
         setName("");
